@@ -9,7 +9,101 @@ response=page.text
 
 soup=BeautifulSoup(response,'html.parser')
 
+#ID DO JOGADOOR
+player_id = soup.find('td', class_='col-name').a.get('href').split('/')[2]
 
-names_players=soup.find('td', class_= 'col-name').div.get_text()
+#NOME DO JOGADOR
+player_name=soup.find_all('a', class_= 'col-name')
+
+#POSIÇÕES DO JOGADOR
+# player_positions= soup.find('td', class_='col-name').find_all('span')
+# positions = []
+# [positions.append(player_positions[i].text) for i in range(len(player_positions))]
+
+#NACIONALIDADE(BANDEIRA)
+player_flag = soup.find('td', class_='col-name').find('img').get('data-src')
+
+#IDADE
+player_age = soup.find('td', class_='col col-ae').text
+
+#OVERALL
+player_over= soup.find('td', class_='col col-oa').text
+
+#POTENCIAL
+player_pot= soup.find('td', class_='col col-pt').text
+
+#TIME E CONTRATO
+
+#VALOR
+player_value=soup.find('td', class_='col col-vl').text
+
+#SALARIO
+player_wage = soup.find('td', class_='col col-wg').text
+
+#TOTAL STATUS
+player_total_status= soup.find('td', class_='col col-tt').text
+
+
+list_player= []
+cont=0
+
+for line in soup.find_all('tr'):
+    
+    if cont > 1:
+        
+        dict_player= {}
+        
+        ref_player = line.find('td', class_='col-name')
+        
+        #ID JOGADOR
+        dict_player['Id'] = ref_player.a.get('href').split('/')[2]
+
+        #NOME JOGADOR
+        dict_player['Nome'] = ref_player.a.text
+        
+        #POSIÇÃO JOGADOR
+        player_positions=ref_player.find_all('span')
+        positions=[]
+        for position in range(len(player_positions)):
+            if len(positions) <= len(player_positions):
+                positions.append(player_positions[position].text)
+                dict_player['Posições']= positions
+            else: break
+            
+        #NACIONALIDADE (BANDEIRA)
+        dict_player['Nacionalidade']=ref_player.find('img').get('data-src')
+        
+        #IDADE
+        dict_player['Idade']=line.find('td',class_='col col-ae').text
+        
+        #OVER
+        dict_player['Overral']=line.find('td',class_='col col-oa').text
+        
+        #POTENTIAL
+        dict_player['Potential']=line.find('td',class_='col col-pt').text
+
+        #TIME E CONTRATO
+        team_contrat=line.find_all('td', class_='col-name')[1]
+        
+        dict_player['Time']=team_contrat.find('a').text
+        dict_player['Time(Bandeira)']=line.find_all('td', class_='col-name')[1].find('img').get('data-src')
+        
+        dict_player['Tempo de Contrato']=team_contrat.find('div',class_='sub').text.split('\n')[1]
+        
+        #VALOR
+        dict_player['Valor']=line.find('td', class_='col col-vl').text
+        
+        #SALARIO
+        dict_player['Salário']=line.find('td',class_='col col-wg').text
+        
+        #STATUS TOTAIS
+        dict_player['Status totais']=line.find('td','col col-tt').text
+        
+        
+
+
+    
+    
+    
 
 
