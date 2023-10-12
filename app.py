@@ -1,5 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
+import pandas as pd
 
 url = 'https://sofifa.com/'
 browser={'User-Agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 \(KHTML, like Gecko) Chrome / 86.0.4240.198Safari / 537.36"}
@@ -8,41 +9,6 @@ page= requests.get(url,headers=browser)
 response=page.text
 
 soup=BeautifulSoup(response,'html.parser')
-
-#ID DO JOGADOOR
-player_id = soup.find('td', class_='col-name').a.get('href').split('/')[2]
-
-#NOME DO JOGADOR
-player_name=soup.find_all('a', class_= 'col-name')
-
-#POSIÇÕES DO JOGADOR
-# player_positions= soup.find('td', class_='col-name').find_all('span')
-# positions = []
-# [positions.append(player_positions[i].text) for i in range(len(player_positions))]
-
-#NACIONALIDADE(BANDEIRA)
-player_flag = soup.find('td', class_='col-name').find('img').get('data-src')
-
-#IDADE
-player_age = soup.find('td', class_='col col-ae').text
-
-#OVERALL
-player_over= soup.find('td', class_='col col-oa').text
-
-#POTENCIAL
-player_pot= soup.find('td', class_='col col-pt').text
-
-#TIME E CONTRATO
-
-#VALOR
-player_value=soup.find('td', class_='col col-vl').text
-
-#SALARIO
-player_wage = soup.find('td', class_='col col-wg').text
-
-#TOTAL STATUS
-player_total_status= soup.find('td', class_='col col-tt').text
-
 
 list_player= []
 cont=0
@@ -99,6 +65,12 @@ for line in soup.find_all('tr'):
         #STATUS TOTAIS
         dict_player['Status totais']=line.find('td','col col-tt').text
         
+        list_player.append(dict_player)
+        
+        df = pd.DataFrame(list_player)
+        df
+    
+    cont +=1
         
 
 
