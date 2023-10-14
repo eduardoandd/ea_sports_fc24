@@ -86,7 +86,7 @@ for url_id in url_list:
 df = pd.DataFrame(list_player)
 df['Posições'] = df['Posições'].str.replace('[', '').str.replace(']', '').str.replace("'",'')
 
-df.to_csv('jogadores_eafc24.csv')
+df.to_csv('jogadores_eafc24.csv',index=False)
 
 
 
